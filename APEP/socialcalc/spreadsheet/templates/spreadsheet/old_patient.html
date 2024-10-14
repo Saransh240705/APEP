@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Old Patient</title>
+    <style>
+        /* General Styles */
+        body {
+            background-color: #2c2f33; /* Dark background */
+            color: #ffffff; /* Light text */
+            font-family: Arial, sans-serif; /* Font family */
+            margin: 0;
+            padding: 20px; /* Add padding around the body */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Stack items vertically */
+        }
+
+        /* Title Styles */
+        .title {
+            display: flex; /* Use flexbox to align title */
+            justify-content: flex-start; /* Align to the left */
+            align-items: center; /* Center vertically */
+            font-size: 2em; /* Larger font for the title */
+            margin-bottom: 20px; /* Space below the title */
+        }
+
+        /* Navigation Bar Styles */
+        nav {
+            background-color: #3b3f45; /* Darker background for nav */
+            padding: 10px; /* Padding for nav */
+            border-radius: 5px; /* Rounded corners for nav */
+            margin-left: auto; /* Align nav to the right */
+        }
+
+        nav ul {
+            list-style: none; /* Remove bullet points */
+            padding: 0; /* Remove padding */
+            margin: 0; /* Remove margin */
+        }
+
+        nav ul li {
+            display: inline; /* Display items in a line */
+            margin-right: 15px; /* Space between items */
+            position: relative; /* For dropdown positioning */
+        }
+
+        nav a {
+            color: #ffffff; /* Link color */
+            text-decoration: none; /* Remove underline */
+        }
+
+        nav .dropdown {
+            display: none; /* Initially hide dropdown */
+            position: absolute; /* Positioning */
+            background-color: #444b52; /* Background for dropdown */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding for dropdown */
+            z-index: 1; /* Ensure it is above other elements */
+            top: 30px; /* Position below the parent */
+            left: 0;
+        }
+
+        nav li:hover .dropdown {
+            display: block; /* Show dropdown on hover */
+        }
+
+        nav .dropdown a {
+            display: block; /* Stack dropdown links vertically */
+            margin: 5px 0; /* Space between dropdown links */
+        }
+
+        /* Form Styles */
+        form {
+            margin: 20px 0; /* Margin around the form */
+            background-color: #3b3f45; /* Slightly darker background for the form */
+            padding: 20px; /* Padding around the form */
+            border-radius: 8px; /* Rounded corners for the form */
+        }
+
+        label {
+            color: #ffffff; /* Light font color for labels */
+            display: block; /* Block display for labels */
+            margin-bottom: 5px; /* Space between label and input */
+        }
+
+        input[type="text"], 
+        input[type="email"], 
+        input[type="tel"], 
+        input[type="number"], 
+        textarea {
+            width: calc(100% - 22px); /* Full width minus padding */
+            padding: 10px; /* Padding inside inputs */
+            border: 1px solid #ffffff; /* Light border for inputs */
+            border-radius: 4px; /* Rounded corners for inputs */
+            background-color: #444b52; /* Darker background for inputs */
+            color: #ffffff; /* Light text color for inputs */
+            margin-bottom: 15px; /* Space between inputs */
+        }
+
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50; /* Green background for submit button */
+            color: white; /* White text for the button */
+            padding: 10px 15px; /* Padding for the button */
+            border: none; /* No border */
+            border-radius: 4px; /* Rounded corners for button */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-top: 10px; /* Space above the button */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* Space above the table */
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ffffff; /* Light borders for table */
+            color: #ffffff; /* Light font for table */
+            text-align: center; /* Center align table content */
+        }
+
+        th {
+            background-color: #3b3f45; /* Slightly darker header */
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #363a41; /* Alternating row color */
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <span>APEP</span>
+    </div>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li>
+                <a href="#">Patient</a>
+                <div class="dropdown">
+                    <a href="new-patient.html">New</a>
+                    <a href="old-patient.html">Old</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Treatments</a>
+                <div class="dropdown">
+                    <a href="protocols.html">Protocols</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">About Us</a>
+                <div class="dropdown">
+                    <a href="about.html">About Us</a>
+                    <a href="apep.html">APEP</a>
+                    <a href="hydraulics.html">Hydraulics</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <h1>Old Patient Information</h1>
+    
+    <!-- Example Form for Old Patient with Placeholder Information -->
+    <form action="submit-patient-info.php" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="John Doe" required>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" value="45" min="0" required>
+
+        <label for="occupation">Occupation:</label>
+        <input type="text" id="occupation" name="occupation" value="Software Engineer">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="johndoe@example.com">
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" value="+1234567890">
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address">1234 Elm Street, Springfield</textarea>
+
+        <label for="photo">Upload Photo:</label>
+        <input type="file" id="photo" name="photo">
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Treatment Sessions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Days</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Duration</th>
+                <th>Reps</th>
+                <th>Seconds/Rep</th>
+                <th>Sets</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>2024-10-01</td>
+                <td>10:00 AM</td>
+                <td>1 hour</td>
+                <td><input type="number" class="reps" value="10"></td>
+                <td><input type="number" class="seconds-per-rep" value="10"></td>
+                <td class="sets">1</td>
+                <td>Consultation</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2024-10-05</td>
+                <td>11:00 AM</td>
+                <td>1.5 hours</td>
+                <td><input type="number" class="reps" value="15"></td>
+                <td><input type="number" class="seconds-per-rep" value="8"></td>
+                <td class="sets">1.2</td>
+                <td>Follow-up</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

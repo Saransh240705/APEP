@@ -1,0 +1,161 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ spreadsheet.title }}</title>
+    <style>
+        :root {
+    --background: #1a1a2e;
+    --color: #ffffff;
+    --primary-color: #0f3460;
+    --table-border: #0f3460;
+    --cell-background: #2b2b44;
+    --cell-border: #3e3e60;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: var(--background);
+    color: var(--color);
+    letter-spacing: 1px;
+    transition: background 0.2s ease;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    position: relative;
+    width: 80%;
+}
+
+.form-box {
+    border: 1px solid hsla(0, 0%, 65%, 0.158);
+    box-shadow: 0 0 36px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    padding: 2rem;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table, td {
+    border: 1px solid var(--table-border);
+}
+
+td {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    background-color: var(--cell-background);
+    color: var(--color);
+    border: 1px solid var(--cell-border);
+    outline: none;
+    transition: background-color 0.2s ease;
+}
+
+td:focus, td:active {
+    background-color: var(--primary-color);
+    color: var(--color);
+}
+
+.cell {
+    font-size: 14px;
+}
+
+.circle {
+    width: 8rem;
+    height: 8rem;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.circle-one {
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transform: translate(-45%, -45%);
+}
+
+.circle-two {
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    transform: translate(45%, 45%);
+}
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <section class="container">
+        <div class="form-container">
+            <div class="circle circle-one"></div>
+            <div class="form-box">
+                <h1>{{ spreadsheet.title }}</h1>
+                <table>
+                    {% for row in 10|range_filter %}
+                        <tr>
+                            {% for col in 10|range_filter %}
+                                <td contenteditable="true" 
+                                    data-row="{{ row }}" 
+                                    data-column="{{ col }}"
+                                    class="cell">
+                                    {% for key, value in cell_dict %}
+                                       {% if row == key|getfirst and col == key|getsecond %}
+                                           {{value}}
+                                       {% endif %}
+                                    {% endfor %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="circle circle-two"></div>
+        </div>
+    </section>
+    <script>
+        $(document).ready(function() {
+            $('.cell').on('blur', function() {
+                var row = $(this).data('row');
+                var column = $(this).data('column');
+                var value = $(this).text();
+                $.post("{% url 'update_cell' spreadsheet.id %}", {
+                    row: row,
+                    column: column,
+                    value: value,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
